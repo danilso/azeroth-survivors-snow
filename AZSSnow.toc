@@ -1,0 +1,5 @@
+## Interface: 11200
+## Title: AZS Snow
+## Notes: Falling snow and snowdrifts overlay. Type /snow for commands.
+## SavedVariables: AZSSnowDB
+AZSSnow.lua
