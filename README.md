@@ -1,20 +1,22 @@
+<p align="center"><img src="assets/azs-snow-banner.svg" width="100%" alt="AZS Snow — зимний пейзаж с анимированным снегопадом" /></p>
+
+<p align="center"><img src="https://img.shields.io/badge/Lua-аддон-2563eb?style=for-the-badge&logo=lua&logoColor=white" alt="Lua аддон" /> <img src="https://img.shields.io/badge/Azeroth_Survivors-зима-38bdf8?style=for-the-badge" alt="Зимняя тема" /> <img src="https://img.shields.io/badge/снег-до_5000_частиц-0ea5e9?style=for-the-badge" alt="До 5000 частиц" /></p>
+
 # AZS Snow — снег и сугробы для Azeroth Survivors
 
-![Lua](https://img.shields.io/badge/language-Lua-000080?style=flat-square) ![Interface](https://img.shields.io/badge/interface-11200-blue?style=flat-square) ![Azeroth Survivors](https://img.shields.io/badge/game-Azeroth%20Survivors-6b4f2a?style=flat-square)
+**AZS Snow превращает игровой экран Azeroth Survivors в зимнюю сцену.** Аддон добавляет настраиваемый снегопад, сугробы, ветер и эффекты глубины. Когда клиент предоставляет координаты игрока, слой реагирует на движение и повороты.
 
-**AZS Snow превращает игровой экран Azeroth Survivors в зимнюю сцену.** Аддон добавляет настраиваемый снегопад и сугробы, ветер и эффекты глубины. Когда клиент предоставляет координаты игрока, слой реагирует на движение и повороты.
-
-[Установка](#установка) · [Быстрый старт](#быстрый-старт) · [Настройки](#настройки-по-умолчанию) · [Устройство](#как-устроен-аддон) · [Команды](COMMANDS.md) · [English](#english)
+[Установка](#установка) · [Быстрый старт](#быстрый-старт) · [Возможности](#возможности) · [Настройки](#настройки-по-умолчанию) · [Команды](COMMANDS.md) · [English](#english)
 
 ## Обзор
 
-AZS Snow — Lua-аддон, манифест которого объявляет интерфейс 11200. Он создаёт прозрачный неинтерактивный слой поверх окна игры и не меняет игровой мир или боевую логику.
+AZS Snow — Lua-аддон с манифестом интерфейса 11200. Он создаёт прозрачный неинтерактивный слой поверх окна игры и не меняет игровой мир или боевую логику.
 
 | Параметр | Значение |
 |---|---|
 | Игра | Azeroth Survivors |
 | Язык и интерфейс | Lua · 11200 |
-| Манифест и код | AZSSnow.toc · AZSSnow.lua |
+| Файлы аддона | AZSSnow.toc · AZSSnow.lua |
 | Сохранённые настройки | AZSSnowDB |
 | Справочник команд | [COMMANDS.md](COMMANDS.md) |
 
@@ -22,11 +24,11 @@ AZS Snow — Lua-аддон, манифест которого объявляе�
 
 - Настраиваемая плотность от 0 до 5 000 снежинок и горизонтальный ветер.
 - 64 сегмента сугробов с настройкой высоты и переключателем роста.
-- Частицы с разными размером, скоростью и прозрачностью создают эффект глубины.
+- Частицы с разными размером, скоростью и прозрачностью для эффекта глубины.
 - Смещение снега при движении и поворотах, если API координат игрока доступен.
 - Выбор положения слоя: над интерфейсом или под HUD.
 - Режим half сокращает обновления при количестве более 300 снежинок.
-- Параметры сохраняются в AZSSnowDB; команда debug показывает состояние слоя.
+- Настройки сохраняются между запусками; debug показывает состояние слоя.
 
 ## Установка
 
@@ -36,7 +38,7 @@ AZS Snow — Lua-аддон, манифест которого объявляе�
 4. Включите AZS Snow в меню аддонов, если клиент показывает такой список.
 5. Запустите игру и введите /snow.
 
-В репозитории лежат два файла аддона — AZSSnow.toc и AZSSnow.lua. Остальные файлы описывают проект и его команды; манифест загружает Lua-файл.
+В папке аддона должны находиться AZSSnow.toc и AZSSnow.lua. Манифест загружает Lua-файл.
 
 ## Быстрый старт
 
@@ -49,8 +51,6 @@ AZS Snow — Lua-аддон, манифест которого объявляе�
 /snow reset           # вернуть значения по умолчанию
 ```
 
-Полный список команд, параметров и примеров: [COMMANDS.md](COMMANDS.md).
-
 ## Настройки по умолчанию
 
 | Настройка | Значение | Назначение |
@@ -59,57 +59,38 @@ AZS Snow — Lua-аддон, манифест которого объявляе�
 | Плотность | 80 | Диапазон 0–5 000 |
 | Ветер | 10 | От −150 до 150; минус направлен влево |
 | Сугробы | Включены | Нижняя кромка экрана |
-| Рост сугробов | Включён | Требует API забега для динамического роста |
 | Высота | 24 | Диапазон 4–80 |
 | Поверх HUD | Выключено | По умолчанию слой под интерфейсом |
 | Глубина | Включена | Эффекты движения и поворота |
-| Сила поворота | 1 | Диапазон −3…3 |
 | Обновление | full | half применяется при плотности выше 300 |
 
 ## Команды
 
-| Примеры | Что меняют |
+| Команды | Назначение |
 |---|---|
-| /snow on, /snow off, /snow toggle | Управление снегопадом |
-| /snow density N, /snow 1k, /snow 2k, /snow 4k | Плотность и профили |
-| /snow wind N, /snow height N | Ветер и высоту сугробов |
-| /snow drifts on/off, /snow grow on/off | Сугробы и их рост |
-| /snow top on/off, /snow depth on/off | Слой относительно HUD и глубину |
-| /snow turn N, /snow rate full/half | Поворот и режим обновления |
-| /snow debug, /snow reset | Диагностика и сброс |
+| `/snow on`, `/snow off`, `/snow toggle` | Управление снегопадом |
+| `/snow density N`, `/snow 1k`, `/snow 2k`, `/snow 4k` | Плотность и профили |
+| `/snow wind N`, `/snow height N` | Ветер и высота сугробов |
+| `/snow drifts on/off`, `/snow grow on/off` | Сугробы и их рост |
+| `/snow top on/off`, `/snow depth on/off` | Слой относительно HUD и глубина |
+| `/snow turn N`, `/snow rate full/half` | Поворот и режим обновления |
+| `/snow debug`, `/snow reset` | Диагностика и сброс |
 
-Синтаксис и допустимые значения подробно описаны в [справочнике команд](COMMANDS.md).
+Полный синтаксис, допустимые значения и примеры — в [справочнике команд](COMMANDS.md).
 
 ## Как устроен аддон
 
-1. При загрузке и входе в мир настройки AZSSnowDB объединяются со значениями по умолчанию.
-2. Прозрачный экранный слой содержит текстуры снежинок и сугробов и не перехватывает мышь.
-3. Глубина частицы задаёт её размер, скорость, яркость и реакцию на ветер.
-4. Сугробы формируются из 64 столбцов с плавным рельефом.
-5. Координаты игрока опрашиваются примерно раз в 0,1 секунды и сглаживаются для эффекта параллакса.
-6. При изменении размера окна поле частиц и сугробы подстраиваются под новый экран.
+При загрузке настройки AZSSnowDB объединяются со значениями по умолчанию. Прозрачный экранный слой отображает снежинки и сугробы и не перехватывает мышь. Глубина частицы влияет на её размер, скорость, яркость и реакцию на ветер; сугробы строятся из 64 столбцов. Координаты игрока опрашиваются примерно раз в 0,1 секунды для плавного параллакса.
 
-Рост сугробов использует только AZS_GetRunTime и AZS_GetRunLength, если игра их предоставляет. Движение читается через GetPlayerMapPosition("player"). Если эти функции недоступны, аддон сохраняет основную визуальную часть, но соответствующий эффект не работает.
+Движение использует GetPlayerMapPosition("player"). Рост сугробов использует AZS_GetRunTime и AZS_GetRunLength, если игра предоставляет эти функции. Без этих API основная визуальная часть продолжает работать.
 
 ## Совместимость и производительность
 
-Манифест указывает Interface: 11200; фактическая совместимость зависит от версии клиента и доступности API. При высокой плотности попробуйте уменьшить число частиц или включить /snow rate half. Для проверки используйте /snow debug, для возврата стандартных параметров — /snow reset.
-
-## Структура репозитория
-
-```text
-azeroth-survivors-snow/
-├── AZSSnow.lua     # снег, сугробы, события и команды
-├── AZSSnow.toc     # метаданные аддона
-├── COMMANDS.md     # справочник команд
-├── README.md
-├── .gitattributes
-└── .gitignore
-```
+Манифест указывает Interface: 11200; совместимость зависит от версии клиента и доступности API. При высокой плотности уменьшите число частиц или включите /snow rate half. Для диагностики используйте /snow debug, для сброса — /snow reset.
 
 ## Лицензия
 
-Лицензия не указана. Репозиторий не предоставляет отдельного разрешения на повторное использование или распространение кода.
+Лицензия не указана; отдельное разрешение на повторное использование кода не предоставлено.
 
 ---
 
@@ -123,13 +104,11 @@ azeroth-survivors-snow/
 - Sixty-four snowdrift columns along the bottom of the screen.
 - Depth-based particle size, speed, brightness, and wind response.
 - Movement and turning effects when player coordinates are available.
-- Saved settings in AZSSnowDB, performance modes, and /snow debug.
+- Saved settings, performance modes, and a diagnostic command.
 
-## Install
+## Install and quick start
 
-Download and extract the repository ZIP, rename the folder azeroth-survivors-snow-main to AZSSnow, then place it in the game's AddOns directory. Enable AZS Snow if the client provides an add-on menu. The manifest declares interface 11200.
-
-## Quick start
+Download and extract the repository ZIP, rename the folder to AZSSnow, and place it in the game's AddOns directory. Enable AZS Snow if the client provides an add-on menu. The manifest declares interface 11200.
 
 ```text
 /snow
@@ -139,12 +118,4 @@ Download and extract the repository ZIP, rename the folder azeroth-survivors-sno
 /snow top off
 ```
 
-See [COMMANDS.md](COMMANDS.md) for the full command reference.
-
-## Implementation and compatibility
-
-The add-on draws a non-interactive overlay with depth-varied particles and 64 drift columns. It polls player coordinates for smoothed motion effects and rebuilds the field when the screen size changes. Optional run-progress functions are read-only. When an API is unavailable, the related effect is disabled while snowfall remains available.
-
-## License
-
-No license is declared.
+See [COMMANDS.md](COMMANDS.md) for the full command reference. No license is declared.
